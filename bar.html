@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>酒館吧檯 | 土豆與蜜酒 Potato & Honeymead</title>
+    <!-- 瀏覽器分頁圖標 (Favicon) -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/icons/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/icons/apple-touch-icon.png"
+    />
+    <!-- 引入思源黑體 (Noto Sans TC Regular 400 & Medium 500) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ==================== 主導覽列 ==================== -->
+    <header class="main-nav">
+      <div class="nav-brand">
+        <!-- 點擊 Logo 回到入口動畫頁 (index.html) -->
+        <a href="index.html" id="logo-return-btn" class="logo-btn">
+          <img
+            id="nav-logo-img"
+            class="nav-logo-img"
+            src="assets/images/nav-logo.png"
+            alt="土豆與蜜酒 Potato & Honeymead"
+          />
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="bar.html" class="active">酒館吧檯</a></li>
+          <li><a href="staff.html">冒險者店員</a></li>
+          <li><a href="menu.html">菜單與點餐</a></li>
+          <li><a href="admin.html" class="nav-admin-link">接單後台</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- ==================== 吧檯主要場景 (互動區) ==================== -->
+    <main>
+      <section id="bar-stage" class="bar-stage-section">
+        <!-- 1. 吧檯背景影片層 (向下漸變成黑色底) -->
+        <div class="bar-bg-wrapper">
+          <video
+            id="bar-bg-video"
+            class="bar-bg-video"
+            autoplay
+            muted
+            loop
+            playsinline
+          >
+            <source src="assets/videos/bar-bg.webm" type="video/webm" />
+            <source src="assets/videos/bar-bg.mp4" type="video/mp4" />
+          </video>
+          <div class="bar-bg-gradient-overlay"></div>
+        </div>
+
+        <!-- 2. 人物動態影片層 (支援多組動畫動態切換) -->
+        <div class="bar-npc-wrapper">
+          <video
+            id="bar-npc-video"
+            class="bar-npc-video"
+            autoplay
+            muted
+            loop
+            playsinline
+          >
+            <source src="assets/videos/npc/npc-idle.webm" type="video/webm" />
+            <source
+              src="assets/videos/npc/npc-idle.mov"
+              type="video/quicktime"
+            />
+            <source src="assets/videos/npc/npc-idle.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- 6. 左上角店鋪地址標籤圖片 (靠上側頂部，banner 下方) -->
+        <div class="bar-address-badge">
+          <img
+            id="bar-address-img"
+            class="bar-address-img"
+            src="assets/images/bar-address.png"
+            alt="酒館地址資訊"
+          />
+        </div>
+
+        <!-- 4 & 5. 對話與選項交互層 (最上層) -->
+        <div class="bar-dialogue-stage">
+          <!-- 4. 左側對話框 (單一背景圖 + 正中間文字，由 JS 隨機 NPC 控制) -->
+          <div class="npc-dialogue-box" id="npc-dialogue-box">
+            <img
+              id="npc-dialogue-bg-img"
+              class="dialogue-bg-img"
+              src="assets/images/dialogues/npc/dialogue-box-bg-npc1.png"
+              alt="對話框底圖"
+            />
+            <div class="dialogue-text-content" id="npc-dialogue-text">
+              <!-- 開場白由 JS 根據選中的 NPC 動態載入 -->
+            </div>
+          </div>
+
+          <!-- 5. 右側對話框 (單一背景圖 + 正中間三行選項文字) -->
+          <div class="options-dialogue-box" id="options-dialogue-box">
+            <img
+              class="options-bg-img"
+              src="assets/images/dialogues/options/options-box-bg.png"
+              alt="選項底圖"
+            />
+            <div class="options-text-list">
+              <button
+                class="dialogue-option-line"
+                data-option="1"
+                id="opt-line-1"
+              ></button>
+              <button
+                class="dialogue-option-line"
+                data-option="2"
+                id="opt-line-2"
+              ></button>
+              <button
+                class="dialogue-option-line"
+                data-option="3"
+                id="opt-line-3"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 酒館介紹與環境資訊 -->
+      <section class="container">
+        <h2 class="section-title">(認真的)酒館介紹</h2>
+        <div class="tavern-intro-card">
+          <div class="intro-text">
+            <h3>「土豆與蜜酒 ── 每場冒險結束後的歸所」</h3>
+            <p style="margin: 1rem 0">
+              我們的初衷是為每個光戰提供一個溫暖、放鬆身心的地方，提供美味的手做餐點，希望能讓客人們有賓至如歸的感受...
+            </p>
+            <p style="margin: 2rem 0">
+              <b>以上是騙人ㄉ。</b>
+            </p>
+            <p style="margin: 1rem 0">
+              老闆說他想開一間酒館，可以販賣<del>拉肥</del>特餐跟進行秘密的情報交易，所以我們就開了，耶( ˘•ω•˘ )y。
+            </p>
+            <p class="text-muted">
+              我們ㄉ店開在這裡：伊弗利特 穹頂皓天 13區56號<br />
+              什麼時候營業：老闆缺錢就開門
+            </p>
+          </div>
+          <!-- 酒館介紹美術素材槽位 (放 assets/images/bar-intro.png) -->
+          <div class="intro-media-slot">
+            <img
+              id="bar-intro-img"
+              src="assets/images/bar-intro.png"
+              alt="酒館環境裝潢"
+              style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;"
+              onerror="this.style.display='none';"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁尾資訊 -->
+    <footer class="site-footer">
+      <p>土豆與蜜酒 Potato & Honeymead © 2026 | FINAL FANTASY XIV RP Tavern</p>
+      <p style="margin-top: 0.4rem; color: #776f66">
+        FINAL FANTASY XIV © SQUARE ENIX CO., LTD. All Rights Reserved.
+      </p>
+    </footer>
+
+    <script src="js/bar.js"></script>
+  </body>
+</html>

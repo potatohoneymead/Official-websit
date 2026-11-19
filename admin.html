@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工作人員接單後台 | 土豆與蜜酒 Potato & Honeymead</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- 主導覽列 -->
+    <header class="main-nav">
+      <div class="nav-brand">
+        <a href="index.html" id="logo-return-btn" class="logo-btn" title="返回酒館入口">
+          <img
+            id="nav-logo-img"
+            class="nav-logo-img"
+            src="assets/images/nav-logo.png"
+            alt="土豆與蜜酒 Potato & Honeymead"
+          />
+          <span class="nav-logo-text">土豆與蜜酒</span>
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="bar.html">酒館吧檯</a></li>
+          <li><a href="staff.html">冒險者店員</a></li>
+          <li><a href="menu.html">菜單與點餐</a></li>
+          <li><a href="admin.html" class="active nav-admin-link">接單後台</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- 後台專屬內容區 -->
+    <main class="page-main-content">
+      <section class="admin-section" style="min-height: 80vh; padding: 2rem 0;">
+        <div class="container">
+          <div class="admin-header-bar">
+            <h2 class="section-title" style="margin-bottom: 0">
+              後台接單管理 (店員視角)
+            </h2>
+            <button id="clear-orders-btn" class="admin-btn btn-clear">
+              清空歷史訂單
+            </button>
+          </div>
+          <p
+            style="
+              color: var(--text-muted);
+              font-size: 0.9rem;
+              margin-bottom: 1.5rem;
+            "
+          >
+            💡 提示：客人送出的訂單會即時出現在此列表中，店員送餐後可點擊「標記完成」。
+          </p>
+
+          <div style="overflow-x: auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>時間</th>
+                  <th>客人稱呼</th>
+                  <th>座位</th>
+                  <th>餐點 / 服務項目</th>
+                  <th>備註</th>
+                  <th>狀態</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <!-- 動態生成訂單資料 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="site-footer">
+      <p>土豆與蜜酒 Potato & Honeymead © 2026 | FINAL FANTASY XIV RP Tavern</p>
+      <p style="margin-top: 0.4rem; color: #776f66">
+        FINAL FANTASY XIV © SQUARE ENIX CO., LTD. All Rights Reserved.
+      </p>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

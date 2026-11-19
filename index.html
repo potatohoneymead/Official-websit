@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>土豆與蜜酒 | Potato & Honeymead</title>
+    <!-- 瀏覽器分頁圖標 (Favicon) -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="entrance-page-body">
+    <!-- ==================== 最上層：酒館入口畫面 ==================== -->
+    <div id="entrance-screen">
+      <!-- 1. 背景影片層 (包含視差微動包裹層) -->
+      <div class="entrance-bg-wrapper" id="entrance-bg-wrapper">
+        <video
+          id="bg-video"
+          class="entrance-video-bg"
+          autoplay
+          muted
+          loop
+          playsinline
+        >
+          <source src="assets/videos/entrance-bg.webm" type="video/webm" />
+          <source src="assets/videos/entrance-bg.mp4" type="video/mp4" />
+        </video>
+        <div class="bg-fallback-overlay"></div>
+      </div>
+
+      <!-- 內容交互層 (卷軸動畫、標準字、進入按鈕) -->
+      <div class="entrance-content-layer">
+        <div class="scroll-animation-container">
+          <!-- 2. 卷軸展開透明影片 (播放一次) -->
+          <video
+            id="scroll-open-video"
+            class="scroll-video"
+            autoplay
+            muted
+            playsinline
+          >
+            <source src="assets/videos/scroll-open.webm" type="video/webm" />
+            <source src="assets/videos/scroll-open.mov" type="video/quicktime" />
+            <source src="assets/videos/scroll-open.mp4" type="video/mp4" />
+          </video>
+
+          <!-- 3. 標準字圖片 (影片播完後顯示，帶輕微漂浮動畫) -->
+          <img
+            id="logo-title-img"
+            class="logo-title-image hidden"
+            src="assets/images/logo-title.png"
+            alt="土豆與蜜酒 Potato & Honeymead"
+          />
+
+          <!-- 5. 卷軸收起轉場透明影片 (點擊進入酒館時播放) -->
+          <video
+            id="scroll-close-video"
+            class="scroll-video hidden"
+            muted
+            playsinline
+          >
+            <source src="assets/videos/scroll-close.webm" type="video/webm" />
+            <source src="assets/videos/scroll-close.mov" type="video/quicktime" />
+            <source src="assets/videos/scroll-close.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- 4. Enter / 進入酒館圖片 (預設隱形且佔位，播完後啟動) -->
+        <div id="enter-btn-wrapper" class="enter-btn-wrapper">
+          <img
+            id="enter-prompt-img"
+            class="enter-prompt-img"
+            src="assets/images/enter-prompt.png"
+            alt="點擊進入酒館 / Press to Enter"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script src="js/entrance.js"></script>
+  </body>
+</html>

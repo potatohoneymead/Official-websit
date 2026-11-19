@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>菜單與點餐服務 | 土豆與蜜酒 Potato & Honeymead</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- 主導覽列 -->
+    <header class="main-nav">
+      <div class="nav-brand">
+        <a href="index.html" id="logo-return-btn" class="logo-btn" title="返回酒館入口">
+          <img
+            id="nav-logo-img"
+            class="nav-logo-img"
+            src="assets/images/nav-logo.png"
+            alt="土豆與蜜酒 Potato & Honeymead"
+          />
+          <span class="nav-logo-text">土豆與蜜酒</span>
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="bar.html">酒館吧檯</a></li>
+          <li><a href="staff.html">冒險者店員</a></li>
+          <li><a href="menu.html" class="active">菜單與點餐</a></li>
+          <li><a href="admin.html" class="nav-admin-link">接單後台</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- 菜單與點餐專屬內容區 -->
+    <main class="page-main-content">
+      <section class="container">
+        <h2 class="section-title">菜單與點餐服務</h2>
+        <div class="order-system-layout">
+          <!-- 左邊：菜單與項目列表 -->
+          <div class="menu-catalog">
+            <h3 style="margin-bottom: 1rem; color: var(--accent-gold)">品項挑選</h3>
+            <div class="menu-items-grid">
+              <div class="menu-card">
+                <div class="menu-img-slot">[ 餐點素材 1 ]</div>
+                <h4>經典特釀蜜酒</h4>
+                <p class="staff-desc">由嚴選蜂蜜發酵，散發淡淡花香與果香。</p>
+                <div class="menu-price">3,000 Gil</div>
+                <button
+                  class="btn-add-order"
+                  data-name="經典特釀蜜酒"
+                  data-price="3000"
+                >
+                  + 加入點單
+                </button>
+              </div>
+
+              <div class="menu-card">
+                <div class="menu-img-slot">[ 餐點素材 2 ]</div>
+                <h4>金黃酥炸薯角</h4>
+                <p class="staff-desc">外酥內嫩，搭配特調迷迭香大蒜醬。</p>
+                <div class="menu-price">2,500 Gil</div>
+                <button
+                  class="btn-add-order"
+                  data-name="金黃酥炸薯角"
+                  data-price="2500"
+                >
+                  + 加入點單
+                </button>
+              </div>
+
+              <div class="menu-card">
+                <div class="menu-img-slot">[ 餐點素材 3 ]</div>
+                <h4>焗烤奶油馬鈴薯濃湯</h4>
+                <p class="staff-desc">濃郁奶香與綿密口感，冒險者的暖胃首選。</p>
+                <div class="menu-price">3,500 Gil</div>
+                <button
+                  class="btn-add-order"
+                  data-name="焗烤奶油馬鈴薯濃湯"
+                  data-price="3500"
+                >
+                  + 加入點單
+                </button>
+              </div>
+
+              <div class="menu-card">
+                <div class="menu-img-slot">[ 服務素材 4 ]</div>
+                <h4>點播樂曲 / 閒聊時光</h4>
+                <p class="staff-desc">
+                  可指定店內演奏曲目，或邀請店員共度15分鐘暢聊。
+                </p>
+                <div class="menu-price">5,000 Gil</div>
+                <button
+                  class="btn-add-order"
+                  data-name="點播樂曲/閒聊時光"
+                  data-price="5000"
+                >
+                  + 加入點單
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右邊：客人送單卡片 -->
+          <aside class="order-cart-panel">
+            <h3 style="margin-bottom: 1rem; color: var(--accent-gold)">
+              您的點餐清單
+            </h3>
+            <ul id="cart-items-list" class="cart-items-list">
+              <!-- 動態生成點餐項目 -->
+            </ul>
+            <div class="cart-total-box">
+              <span>預估總計：</span>
+              <span id="cart-total">0 Gil</span>
+            </div>
+
+            <form id="order-form">
+              <div class="order-form-group">
+                <label for="customer-name">光之戰士大名 / 稱呼：</label>
+                <input
+                  type="text"
+                  id="customer-name"
+                  placeholder="例如：Warrior of Light"
+                  required
+                />
+              </div>
+              <div class="order-form-group">
+                <label for="seat-number">座位 / 位置：</label>
+                <select id="seat-number">
+                  <option value="吧檯左側">吧檯左側</option>
+                  <option value="吧檯中央">吧檯中央</option>
+                  <option value="吧檯右側">吧檯右側</option>
+                  <option value="靠窗卡座 A">靠窗卡座 A</option>
+                  <option value="靠窗卡座 B">靠窗卡座 B</option>
+                  <option value="壁爐沙發區">壁爐沙發區</option>
+                </select>
+              </div>
+              <div class="order-form-group">
+                <label for="order-notes">備註 / 特殊需求：</label>
+                <textarea
+                  id="order-notes"
+                  rows="2"
+                  placeholder="甜度、冰塊或是想聊的話題..."
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-submit-order">
+                傳送點單至吧檯
+              </button>
+            </form>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="site-footer">
+      <p>土豆與蜜酒 Potato & Honeymead © 2026 | FINAL FANTASY XIV RP Tavern</p>
+      <p style="margin-top: 0.4rem; color: #776f66">
+        FINAL FANTASY XIV © SQUARE ENIX CO., LTD. All Rights Reserved.
+      </p>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script src="js/order.js"></script>
+  </body>
+</html>

@@ -1,0 +1,909 @@
+:root {
+  --bg-color: #1a1614;
+  --panel-bg: #2a2421;
+  --accent-gold: #d4a359;
+  --accent-honey: #e8a838;
+  --text-main: #f5ede0;
+  --text-muted: #b5a999;
+  --border-color: #4a3e35;
+  --danger-color: #b33939;
+  --success-color: #218c74;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei';
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* 頂部導覽列 */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background-color: rgba(26, 22, 20, 0.7);
+  border-bottom: 2px solid var(--border-color);
+  backdrop-filter: blur(5px);
+}
+
+.nav-brand .logo-btn {
+  background: none;
+  border: none;
+  color: var(--accent-gold);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-brand .logo-btn:hover {
+  transform: scale(1.03);
+  opacity: 0.95;
+}
+
+.nav-logo-img {
+  height: 45px;
+  width: auto;
+
+  object-fit: contain;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--accent-honey);
+  border-bottom: 2px solid var(--accent-honey);
+  padding-bottom: 4px;
+}
+
+.nav-admin-link {
+  color: var(--accent-gold) !important;
+  opacity: 0.8;
+}
+
+/* 獨立一般頁面主體容器 */
+.page-main-content {
+  min-height: calc(100vh - 160px);
+  padding: 2rem 0;
+}
+
+/* 區域通用樣式 */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--accent-gold);
+  margin-bottom: 2rem;
+  position: relative;
+  letter-spacing: 2px;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--accent-honey);
+  margin: 0.5rem auto 0;
+}
+
+/* 1. 最上層：酒館入口畫面 (滿版分層架構) */
+#entrance-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #0d0b0a;
+  overflow: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  user-select: none;
+}
+
+#entrance-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* 1. 背景影片與視差微動層 (放大10%以供滑鼠位移不露黑邊) */
+.entrance-bg-wrapper {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+}
+
+.entrance-video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+.bg-fallback-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30, 20, 15, 0.4) 0%, rgba(10, 8, 7, 0.85) 100%);
+}
+
+/* 內容層：置中卷軸與按鈕 */
+.entrance-content-layer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.scroll-animation-container {
+  position: relative;
+  width: min(60vw, 1500px);
+  aspect-ratio: 16 / 9;
+}
+
+/* 展開影片與收起影片尺寸位置完全重疊 */
+.scroll-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: transform 0.15s ease-out;
+}
+
+/* 3. 標準字圖片：上下緩慢微浮動效果 */
+.logo-title-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  animation: floatSlow 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
+  transition: transform 0.15s ease-out;
+}
+
+/* 點擊 Enter 時快速回正定位 */
+.logo-title-image.reset-position {
+  animation: none !important;
+  transform: translateY(0px) !important;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* 4. 進入按鈕層：預設佔位但透明且不可點擊 */
+.enter-btn-wrapper {
+  margin-top: 1.5rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  visibility: visible;
+  transition: opacity 0.5s ease, transform 0.2s ease;
+}
+
+/* 影片播完後啟動：可點擊且開始呼吸閃爍 */
+.enter-btn-wrapper.active {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: pulseBlink 2.6s ease-in-out infinite;
+}
+
+.enter-btn-wrapper.active:hover {
+  transform: scale(1.06);
+}
+
+.enter-prompt-img {
+  max-width: min(10vw, 150px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 2px 8px rgba(232, 168, 56, 0.3));
+}
+
+.enter-fallback-text {
+  color: var(--accent-gold);
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(232, 168, 56, 0.6);
+}
+
+@keyframes pulseBlink {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 工具類：切換顯示隱藏 */
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   2. 中層：吧檯互動場景 (分層架構：背景影片 -> 人物影片 -> 吧檯 -> 對話框)
+   ========================================================================== */
+.bar-stage-section {
+  position: relative;
+  width: 100%;
+  height: 92vh; /* 主場景高度佔據螢幕絕大部分 */
+  min-height: 650px;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
+/* 1. 吧檯背景影片層 */
+.bar-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.bar-bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 底部向下平滑漸變成深黑色背景 */
+.bar-bg-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 22, 20, 0) 50%,
+    rgba(26, 22, 20, 0.7) 75%,
+    var(--bg-color) 100%
+  );
+}
+
+/* 2. 人物影片層 (居中置於吧檯後方) */
+.bar-npc-wrapper {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80vw, 1200px);
+  height: 80%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.bar-npc-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+
+/* 6. 左上角店鋪地址標籤 (木板吊牌：由上往下垂落翻開 + 自然物理微晃動) */
+.bar-address-badge {
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  z-index: 15;
+  pointer-events: none;
+  max-width: min(30vw, 270px);
+  filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.7));
+  perspective: 1000px;                      /* 開啟 3D 透視深度 */
+  transform-origin: top center;             /* 以頂部為支點 (像吊著木板的繩子/釘子) */
+  animation: woodDropSwing 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+             woodIdleSway 5.5s ease-in-out 2.4s infinite alternate;
+}
+
+.bar-address-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 階段 1：進場「從畫面上方垂直滑落吊下」+「大幅度 3D 翻開擺盪回彈」 */
+@keyframes woodDropSwing {
+  0% {
+    opacity: 0;
+    /* 起點：藏在上方畫面外 (-180px) 並且向後大幅翻折 (-105deg，幾乎水平向上貼在天花板) */
+    transform: translateY(-180px) rotateX(-105deg);
+  }
+  32% {
+    opacity: 1;
+    /* 垂直猛然滑落到位，木板因劇烈慣性往前大幅翻揚飛起 (+65deg) */
+    transform: translateY(0px) rotateX(65deg);
+  }
+  50% {
+    /* 大幅往後猛甩反彈 (-38deg) */
+    transform: translateY(0px) rotateX(-38deg);
+  }
+  68% {
+    /* 再次往前大晃動 (+22deg) */
+    transform: translateY(0px) rotateX(22deg);
+  }
+  82% {
+    /* 往後微晃 (-10deg) */
+    transform: translateY(0px) rotateX(-10deg);
+  }
+  92% {
+    /* 收斂微晃 (+4deg) */
+    transform: translateY(0px) rotateX(4deg);
+  }
+  100% {
+    opacity: 1;
+    /* 完全落定位，垂直靜止 */
+    transform: translateY(0px) rotateX(0deg);
+  }
+}
+
+/* 階段 2：翻開定位後，常態緩慢微風晃動 (像掛在酒館門口的真實木牌) */
+@keyframes woodIdleSway {
+  0% {
+    transform: rotateX(0deg) rotateZ(0deg);
+  }
+  50% {
+    transform: rotateX(2.5deg) rotateZ(0.6deg);   /* 微風吹拂微傾斜 */
+  }
+  100% {
+    transform: rotateX(-1.5deg) rotateZ(-0.5deg);
+  }
+}
+
+/* 4 & 5. 對話與選項交互層 (最上層) */
+.bar-dialogue-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none; /* 預設穿透，只讓選項按鈕可點 */
+  max-width: 1500px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+/* 4. 中間對話框 (居中置於角色正下方並靠底部) */
+.npc-dialogue-box {
+  position: absolute;
+  bottom: 2rem;                       /* 離底部距離，可自由微調 */
+  left: 50%;
+  transform: translate(-50%, 20px);   /* 水平絕對置中 */
+  width: min(85vw, 1000px);            /* 寬度適中，像標準 RPG 對話框 */
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: auto;
+}
+
+.npc-dialogue-box.show {
+  opacity: 1;
+  transform: translate(-50%, 0);      /* 水平維持 50% 置中 */
+}
+
+.dialogue-bg-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.7));
+}
+
+.dialogue-text-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.8rem 4rem 1.5rem 4rem;
+    /*上右下左*/
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400; /* Regular */
+  font-size: 1.7rem;
+  line-height: 1.7;
+  color: #000000;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+  transition: opacity 0.25s ease;
+}
+
+/* 5. 右側對話框 (上移，位於畫面右側中央偏上) */
+.options-dialogue-box {
+  position: absolute;
+  right: -10rem;                        /* 靠右邊距 */
+  bottom:3rem;                     /* 👈 大幅上移！避開底部中間對話框 */
+  width: min(40vw, 420px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  pointer-events: auto;
+}
+
+.options-dialogue-box.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.options-bg-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.7));
+}
+
+.options-text-list {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 1.2rem 2rem;
+  padding-top: 2.5rem;
+  box-sizing: border-box;
+  gap: 0.2rem;
+}
+
+/* 選項文字行按鈕 */
+.dialogue-option-line {
+  background: none;
+  border: none;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400; /* Regular */
+  font-size: 1.1rem;
+  text-align: center;
+  padding: none;
+  cursor: pointer;
+  border-radius: 8px;              /* 圓角矩形 */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.5px;
+  color: #edd4b0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  display: block;
+  width: 100%;
+}
+
+.dialogue-option-line:hover {
+  /* 字體大小、字體顏色、位置都不變 */
+  color: #edd4b0;
+  background-color: rgba(0, 0, 0, 0.2); /* 黑色半透明底色 */
+  border-radius: 8px;                    /* 圓角矩形效果 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* 黑色半透明陰影 */
+}
+
+/* 2. 中層區塊 */
+.tavern-intro-card {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.intro-media-slot {
+  aspect-ratio: 16/9;
+  border: 1px dashed var(--border-color);
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+/* 店員卡片網格 */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.staff-card {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.staff-avatar-slot {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  border: 2px dashed var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.staff-role {
+  color: var(--accent-honey);
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.staff-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* 菜單與點餐兩欄式佈局 */
+.order-system-layout {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 2rem;
+}
+
+.menu-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.menu-card {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-img-slot {
+  height: 110px;
+  border: 1px dashed var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+  border-radius: 4px;
+}
+
+.menu-price {
+  color: var(--accent-honey);
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.btn-add-order {
+  background-color: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-order:hover {
+  background-color: var(--accent-gold);
+  color: #1a1614;
+}
+
+/* 點餐單與購物車 */
+.order-cart-panel {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+}
+
+.cart-items-list {
+  list-style: none;
+  min-height: 120px;
+  max-height: 250px;
+  overflow-y: auto;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.cart-total-box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: var(--accent-honey);
+}
+
+.order-form-group {
+  margin-bottom: 1rem;
+}
+
+.order-form-group label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-muted);
+}
+
+.order-form-group input,
+.order-form-group select,
+.order-form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #1a1614;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-main);
+}
+
+.btn-submit-order {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--accent-gold);
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #1a1614;
+}
+
+/* 3. 下層：工作人員後台接單系統 */
+.admin-section {
+  background-color: #141110;
+  border-top: 2px solid var(--border-color);
+}
+
+.admin-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--panel-bg);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--accent-gold);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  background-color: #333;
+}
+
+.status-badge.pending {
+  background-color: #a3751a;
+  color: #fff;
+}
+
+.status-badge.completed {
+  background-color: var(--success-color);
+  color: #fff;
+}
+
+.admin-btn {
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-complete {
+  background-color: var(--success-color);
+  color: #fff;
+}
+
+.btn-clear {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+/* 頁尾 */
+.site-footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   RWD 響應式中斷點架構規劃 (按螢幕寬度與高度分層)
+   - 2K 旗艦螢幕 (2560x1440 及以上)
+   - 標準 FHD 螢幕 (1920x1080 基準，1441px ~ 1920px)
+   - 筆電與中型螢幕 (1080x720 左右，769px ~ 1200px)
+   - 平板與手機直向 (768px 及以下)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   【層級 1】2K 超高解析度螢幕 (寬度 >= 1921px，例如 2560x1440)
+   適合：大尺寸螢幕、電競螢幕，元件等比微放大，避免畫面看起來太空
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 1921px) {
+  /* 入口卷軸容器 */
+  .scroll-animation-container {
+    width: min(70vw, 1800px);
+  }
+
+  /* 吧檯主場景高度微調 */
+  .bar-stage-section {
+    height: 94vh;
+  }
+
+  /* 人物尺寸稍放大 */
+  .bar-npc-wrapper {
+        bottom: 12%;
+        width: min(80vw, 1500px);
+        height: 80%;
+  }
+
+  /* 左上角木板招牌放大 */
+  .bar-address-badge {
+    max-width: 360px;
+    left: 4rem;
+  }
+
+  /* 中間對話框寬度與字體 */
+  .npc-dialogue-box {
+    width: min(75vw, 1200px);
+    bottom: 3rem;
+  }
+
+  .dialogue-text-content {
+    font-size: 2rem;
+  }
+
+  /* 右側選項框 */
+  .options-dialogue-box {
+    width: 480px;
+    right: -25rem;
+    bottom: 5rem;
+  }
+
+  .dialogue-option-line {
+    font-size: 1.6rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   【層級 2】標準桌面螢幕 (1201px ~ 1920px，例如 1920x1080)
+   目前 style.css 的預設數值即以此為基準，若有特定微調可寫在此處
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 1201px) and (max-width: 1920px) {
+  /* 預設樣式標準顯示 */
+}
+
+/* --------------------------------------------------------------------------
+   【層級 3 & 4】寬度小於 1200px (包含平板、筆電小視窗與手機)
+   - 隱藏干擾元素：人物影片、對話框、選項框
+   - 木板地址招牌改為水平置中
+   - 畫面轉為精緻乾淨的招牌展示區
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1200px) {
+  /* 吧檯主場景高度適度收縮，讓下方介紹自然浮現 */
+  .bar-stage-section {
+    height: 52vh;
+    min-height: 340px;
+  }
+
+  /* 隱藏干擾元素：人物影片、對話框、選項框 */
+  .bar-npc-wrapper,
+  .npc-dialogue-box,
+  .options-dialogue-box {
+    display: none !important;
+  }
+
+  /* 木板地址招牌水平置中懸掛 */
+  .bar-address-badge {
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    max-width: min(80vw, 320px);
+    top: 1.5rem;
+  }
+
+  /* 菜單卡片與介紹改為單欄排版 */
+  .tavern-intro-card,
+  .order-system-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* 導覽列縮減間距 */
+  .main-nav {
+    padding: 0.6rem 1.2rem;
+  }
+
+  .nav-links {
+    gap: 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .nav-logo-img {
+    height: 28px;
+    width: auto;
+  }
+}
